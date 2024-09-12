@@ -128,7 +128,19 @@ const App: React.FC = () => {
             color={selectedLines.includes(feature.index) ? 'red' : 'blue'}
             eventHandlers={{
               click: () => handleLineClick(feature.index),
+              mouseover: (event: LeafletMouseEvent) => {
+                const yardname = feature.properties.YARDNAME.trim() ? feature.properties.YARDNAME : "No Name";
+                const tooltip = event.target.bindTooltip(
+                  `<div><strong>Yardname:</strong> ${yardname}<br /><strong>KM:</strong> ${feature.properties.KM}</div>`,
+                  { direction: 'top', permanent: false }
+                );
+                tooltip.openTooltip(event.latlng);
+              },
+              mouseout: (event: LeafletMouseEvent) => {
+                event.target.closeTooltip();
+              },
             }}
+            
           />
         ))}
 
